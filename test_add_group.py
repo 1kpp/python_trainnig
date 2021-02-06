@@ -33,6 +33,7 @@ class UntitledTestCase(unittest.TestCase):
         wd.find_element_by_name("group_footer").send_keys("asdsadd")
         wd.find_element_by_name("submit").click()
         wd.find_element_by_link_text("groups").click()
+        wd.find_element_by_link_text("home").click()
         wd.find_element_by_link_text("Logout").click()
     
     def is_element_present(self, how, what):
