@@ -15,11 +15,14 @@ class UntitledTestCase(unittest.TestCase):
     def test_untitled_test_case(self):
         wd = self.wd
         wd.get("http://localhost/addressbook/")
+        #Log in
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_id("LoginForm").submit()
+
+        #Open a group section and create a new one
         wd.find_element_by_link_text("groups").click()
         wd.find_element_by_name("new").click()
         wd.find_element_by_name("group_name").click()
@@ -32,6 +35,8 @@ class UntitledTestCase(unittest.TestCase):
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys("asdsadd")
         wd.find_element_by_name("submit").click()
+
+        #Open a group section and check whether a created one there
         wd.find_element_by_link_text("groups").click()
         wd.find_element_by_link_text("home").click()
         wd.find_element_by_link_text("Logout").click()
