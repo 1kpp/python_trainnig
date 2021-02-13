@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
 import unittest
 from group import Group
 
@@ -12,24 +10,18 @@ class UntitledTestCase(unittest.TestCase):
     
     def test_add_group(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.open_group_section(wd)
         self.create_group(wd, Group(name="asdsad", header="13123123", footer="asdsadd"))
-        self.return_to_groups(wd)
-        self.lodout(wd)
+        self.logout(wd)
 
     def test_add_empty_group(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.open_group_section(wd)
         self.create_group(wd, Group(name="", header="", footer=""))
-        self.return_to_groups(wd)
-        self.lodout(wd)
+        self.logout(wd)
 
 
-    def lodout(self, wd):
+    def logout(self, wd):
         # Logout
         wd.find_element_by_link_text("Logout").click()
 
@@ -37,6 +29,7 @@ class UntitledTestCase(unittest.TestCase):
         wd.find_element_by_link_text("groups").click()
 
     def create_group(self, wd, group):
+        self.open_group_section(wd)
         # Create a new group
         wd.find_element_by_name("new").click()
         # Fill group form
@@ -51,12 +44,14 @@ class UntitledTestCase(unittest.TestCase):
         wd.find_element_by_name("group_footer").send_keys(group.footer)
         # Submit group creation
         wd.find_element_by_name("submit").click()
+        self.return_to_groups(wd)
 
     def open_group_section(self, wd):
         wd.find_element_by_link_text("groups").click()
 
     def login(self, wd, username, password):
         # Log in
+        self.open_home_page(wd)
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_name("pass").clear()
