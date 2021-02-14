@@ -31,10 +31,11 @@ class GroupHelper:
         wd = self.app.wd
         self.open_group_section()
         #select first group
-        wd.find_element_by_name("selected[]")
+        wd.find_element_by_name("selected[]").click()
         #submit deletion
-        wd.find_element_by_name("delete")
+        wd.find_element_by_name("delete").click()
         self.return_to_groups()
+
 
     def open_group_section(self):
         wd = self.app.wd
