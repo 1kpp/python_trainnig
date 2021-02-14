@@ -8,6 +8,7 @@ class SessionHelper:
         # Logout
         wd = self.app.wd
         wd.find_element_by_link_text("Logout").click()
+        wd.find_element_by_xpath("(//input[@value='Login'])")
 
     def login(self, username, password):
         # Log in
