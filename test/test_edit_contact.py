@@ -2,6 +2,8 @@ from model.contact import Contact
 
 
 def test_edit_contact(app):
+    if app.contact.count() == 0:
+        app.contact.create(Contact(firstname="name for edition"))
     app.contact.edit(Contact(firstname="NOVbIU KOHTAKT",
                              middlename="NOVbIU KOHTAKT", lastname="NOVbIU KOHTAKT", nickname="NOVbIU KOHTAKT",
                              company="NOVbIU KOHTAKT",

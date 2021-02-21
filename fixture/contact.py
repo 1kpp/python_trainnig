@@ -84,3 +84,8 @@ class ContactHelper:
         self.type("address2", contact.address2)
         self.type("phone2", contact.phone2)
         self.type("notes", contact.notes)
+
+    def count(self):
+        wd = self.app.wd
+        self.return_to_home()
+        return len(wd.find_elements_by_name("selected[]"))
