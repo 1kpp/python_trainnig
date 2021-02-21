@@ -8,32 +8,34 @@ class ContactHelper:
     def create(self, contact):
         wd = self.app.wd
         # add new contact
-        self.return_to_home()
         wd.find_element_by_link_text("add new").click()
         # filling the form
         self.fill_form(contact)
         # submit
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        self.return_to_home()
 
     def edit(self, contact):
         wd = self.app.wd
-        # select first contact
         self.return_to_home()
+        # select first contact
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_css_selector("[title='Edit']").click()
         # edit all the fields
         self.fill_form(contact)
         # submit
         wd.find_element_by_css_selector("[value='Update']").click()
+        self.return_to_home()
 
     def delete(self):
         wd = self.app.wd
-        # select first contact
         self.return_to_home()
+        # select first contact
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_css_selector("[title='Edit']").click()
         # click delete
         wd.find_element_by_css_selector("[value='Delete']").click()
+        self.return_to_home()
 
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
@@ -42,10 +44,12 @@ class ContactHelper:
         wd.find_element_by_css_selector("[title='Edit']").click()
         self.fill_form(new_contact_data)
         wd.find_element_by_css_selector("[value='Update']").click()
+        self.return_to_home()
 
     def return_to_home(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not(wd.current_url.endswith("addressbook/") and len(wd.find_elements_by_name("searchstring")) > 0):
+            wd.find_element_by_link_text("home").click()
 
     def type(self, field_name, text):
         wd = self.app.wd
