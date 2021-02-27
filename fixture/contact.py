@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
 
+
 class ContactHelper:
     def __init__(self, app):
         self.app = app
@@ -40,6 +41,7 @@ class ContactHelper:
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
         self.return_to_home()
+        # select first contact
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_css_selector("[title='Edit']").click()
         self.fill_form(new_contact_data)
@@ -98,8 +100,11 @@ class ContactHelper:
         wd = self.app.wd
         self.return_to_home()
         contacts = []
-        for element in wd.find_elements_by_name("selected[]"):
-            text = element.text
-            id = element.get_attribute("value")
-            contacts.append(Contact(name=text, id=id))
+        for element in wd.find_elements_by_name("entry"):
+            text_lastname = element.find_element_by_css_selector("tr[name='entry'] > td:nth-child(2)").text
+            text_firstname = element.find_element_by_css_selector("tr[name='entry'] > td:nth-child(3)").text
+            id = element.find_element_by_css_selector(".center input ").get_attribute("value")
+            contacts.append(Contact(lastname=text_lastname, firstname=text_firstname, id=id))
         return contacts
+
+
