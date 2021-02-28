@@ -5,10 +5,6 @@ class GroupHelper:
     def __init__(self, app):
         self.app = app
 
-    def return_to_groups(self):
-        wd = self.app.wd
-        wd.find_element_by_link_text("groups").click()
-
     def create(self, group):
         # Create a new group
         wd = self.app.wd
@@ -21,20 +17,20 @@ class GroupHelper:
         self.return_to_groups()
         self.group_cache = None
 
-    def delete_first_group(self):
+    def delete_group_by_index(self, index):
         wd = self.app.wd
         self.open_group_section()
         # select first group
-        self.select_first_group()
+        self.select_group_by_index(index)
         # Submit deletion
         wd.find_element_by_name("delete").click()
         self.return_to_groups()
         self.group_cache = None
 
-    def edit_first_group(self, group):
+    def edit_group_by_index(self, group, index):
         wd = self.app.wd
         self.open_group_section()
-        self.select_first_group()
+        self.select_group_by_index(index)
         # click edit button
         wd.find_element_by_name("edit").click()
         # edit all the fields
@@ -44,14 +40,35 @@ class GroupHelper:
         self.return_to_groups()
         self.group_cache = None
 
+    def modify_group_by_index(self, new_group_data, index):
+        wd = self.app.wd
+        self.open_group_section()
+        self.select_group_by_index(index)
+        wd.find_element_by_name("edit").click()
+        # open modification form
+        # fill group form
+        self.fill_form(new_group_data)
+        # submit modifications
+        wd.find_element_by_name("update").click()
+        self.return_to_groups()
+        self.group_cache = None
+
+    def select_group_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def modify_first_group(self):
+        self.modify_group_by_index(0)
+
     def select_first_group(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
 
-    def open_group_section(self):
-        wd = self.app.wd
-        if not(wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
-            wd.find_element_by_link_text("groups").click()
+    def edit_first_group(self):
+        self.edit_group_by_index(0)
+
+    def delete_first_group(self):
+        self.delete_group_by_index(0)
 
     def fill_form(self, group):
         wd = self.app.wd
@@ -66,23 +83,19 @@ class GroupHelper:
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
-    def modify_first_group(self, new_group_data):
-        wd = self.app.wd
-        self.open_group_section()
-        self.select_first_group()
-        wd.find_element_by_name("edit").click()
-        # open modification form
-        # fill group form
-        self.fill_form(new_group_data)
-        # submit modifications
-        wd.find_element_by_name("update").click()
-        self.return_to_groups()
-        self.group_cache = None
-
     def count(self):
         wd = self.app.wd
         self.open_group_section()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def open_group_section(self):
+        wd = self.app.wd
+        if not(wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
+            wd.find_element_by_link_text("groups").click()
+
+    def return_to_groups(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("groups").click()
 
     group_cache = None
 
