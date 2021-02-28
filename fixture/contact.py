@@ -15,6 +15,7 @@ class ContactHelper:
         # submit
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.return_to_home()
+        self.contact_cache = None
 
     def edit(self, contact):
         wd = self.app.wd
@@ -27,6 +28,7 @@ class ContactHelper:
         # submit
         wd.find_element_by_css_selector("[value='Update']").click()
         self.return_to_home()
+        self.contact_cache = None
 
     def delete(self):
         wd = self.app.wd
@@ -37,6 +39,7 @@ class ContactHelper:
         # click delete
         wd.find_element_by_css_selector("[value='Delete']").click()
         self.return_to_home()
+        self.contact_cache = None
 
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
@@ -47,6 +50,7 @@ class ContactHelper:
         self.fill_form(new_contact_data)
         wd.find_element_by_css_selector("[value='Update']").click()
         self.return_to_home()
+        self.contact_cache = None
 
     def return_to_home(self):
         wd = self.app.wd
@@ -96,15 +100,18 @@ class ContactHelper:
         self.return_to_home()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.return_to_home()
-        contacts = []
-        for element in wd.find_elements_by_name("entry"):
-            text_lastname = element.find_element_by_css_selector("tr[name='entry'] > td:nth-child(2)").text
-            text_firstname = element.find_element_by_css_selector("tr[name='entry'] > td:nth-child(3)").text
-            id = element.find_element_by_css_selector(".center input ").get_attribute("value")
-            contacts.append(Contact(lastname=text_lastname, firstname=text_firstname, id=id))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.return_to_home()
+            self.contact_cache = []
+            for element in wd.find_elements_by_name("entry"):
+                text_lastname = element.find_element_by_css_selector("tr[name='entry'] > td:nth-child(2)").text
+                text_firstname = element.find_element_by_css_selector("tr[name='entry'] > td:nth-child(3)").text
+                id = element.find_element_by_css_selector(".center input ").get_attribute("value")
+                self.contact_cache.append(Contact(lastname=text_lastname, firstname=text_firstname, id=id))
+        return list(self.contact_cache)
 
 

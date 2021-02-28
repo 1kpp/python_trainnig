@@ -11,8 +11,8 @@ def test_add_new_contact(app):
                                bday="22", bmonth="April", byear="1870", aday="22", amonth="April", ayear="2020",
                                address2="Soviet country", phone2="Soviet country", notes="Soviet country")
     app.contact.create(contact)
+    assert len(old_list) + 1 == app.contact.count()
     new_list = app.contact.get_contact_list()
-    assert len(old_list) + 1 == len(new_list)
     old_list.append(contact)
     assert sorted(new_list, key=Contact.max_id) == sorted(old_list, key=Contact.max_id)
 
