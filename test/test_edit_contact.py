@@ -8,16 +8,16 @@ def test_edit_contact(app):
     old_list = app.contact.get_contact_list()
     index = randrange(len(old_list))
     contact = Contact(firstname="NOVbIU KOHTAKT",
-                             middlename="NOVbIU KOHTAKT", lastname="NOVbIU KOHTAKT", nickname="NOVbIU KOHTAKT",
-                             company="NOVbIU KOHTAKT",
-                             zagolovok="NOVbIU KOHTAKT",
-                             address="NOVbIU KOHTAKT-Petersburg", home="NOVbIU KOHTAKT", mobile="NOVbIU KOHTAKT",
-                             work="NOVbIU KOHTAKT",
-                             fax="NOVbIU KOHTAKT", email="NOVbIU KOHTAKT", email2="NOVbIU KOHTAKT",
+                             middlename="middlename", lastname="lastname", nickname="nickname",
+                             company="company",
+                             zagolovok="zagolovok",
+                             address="NOVbIU KOHTAKT-Petersburg", home="0123", mobile="0123",
+                             work="0123",
+                             fax="0123", email="654126845", email2="email2",
                              email3="NOVbIU KOHTAKT",
-                             homepage="NOVbIU KOHTAKT",
+                             homepage="homepage",
                              bday="25", bmonth="May", byear="1900", aday="1", amonth="May", ayear="2021",
-                             address2="NOVbIU KOHTAKT", phone2="NOVbIU KOHTAKT", notes="NOVbIU KOHTAKT")
+                             address2="address2", phone2="685312564", notes="notes")
     contact.id = old_list[index].id
     app.contact.edit_contact_by_index(contact, index)
     new_list = app.contact.get_contact_list()
