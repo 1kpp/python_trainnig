@@ -136,23 +136,32 @@ class ContactHelper:
                 text_lastname = cells[1].text
                 text_firstname = cells[2].text
                 id = element.find_element_by_css_selector(".center input ").get_attribute("value")
-                all_phones = cells[5].text.splitlines()
+                all_phones = cells[5].text
+                all_emails = cells[4].text
+                address = cells[3].text
                 self.contact_cache.append(Contact(lastname=text_lastname, firstname=text_firstname, id=id,
-                                home=all_phones[0], mobile= all_phones[1], work= all_phones[2], phone2=all_phones[3]))
+                                                  all_emails_from_home_page=all_emails,
+                                                  all_phones_from_home_page=all_phones,
+                                                  address=address))
         return list(self.contact_cache)
 
     def get_contact_info_from_edit_page(self, index):
         wd = self.app.wd
         self.select_contact_by_index(index)
-        firstname = wd.find_element_by_name("firstname").get_attribute("value")
-        lastname = wd.find_element_by_name("lastname").get_attribute("value")
         id = wd.find_element_by_name("id").get_attribute("value")
         homephone = wd.find_element_by_name("home").get_attribute("value")
         mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
         workphone = wd.find_element_by_name("work").get_attribute("value")
         phone2 = wd.find_element_by_name("phone2").get_attribute("value")
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
+        lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
         return Contact(firstname=firstname, lastname=lastname, home=homephone,
-                       mobile= mobilephone, work= workphone, phone2=phone2, id=id)
+                       mobile=mobilephone, work=workphone, phone2=phone2, id=id,
+                       email=email, email2=email2, email3=email3, address=address)
 
     def get_contact_list_from_view_page(self, index):
         wd = self.app.wd
