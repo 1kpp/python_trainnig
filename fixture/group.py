@@ -96,6 +96,7 @@ class GroupHelper:
     def return_to_groups(self):
         wd = self.app.wd
         wd.find_element_by_link_text("groups").click()
+        wd.find_element_by_id("logo")
 
     group_cache = None
 
