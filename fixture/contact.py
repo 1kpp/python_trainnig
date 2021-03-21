@@ -30,11 +30,33 @@ class ContactHelper:
         self.return_to_home()
         self.contact_cache = None
 
+    def edit_contact_by_id(self, contact, id):
+        wd = self.app.wd
+        self.return_to_home()
+        # select first contact
+        self.select_contact_by_id(id)
+        # edit all the fields
+        self.fill_form(contact)
+        # submit
+        wd.find_element_by_css_selector("[value='Update']").click()
+        self.return_to_home()
+        self.contact_cache = None
+
     def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.return_to_home()
         # select first contact
         self.select_contact_by_index(index)
+        # click delete
+        wd.find_element_by_css_selector("[value='Delete']").click()
+        self.return_to_home()
+        self.contact_cache = None
+
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.return_to_home()
+        # select first contact
+        self.select_contact_by_id(id)
         # click delete
         wd.find_element_by_css_selector("[value='Delete']").click()
         self.return_to_home()
@@ -49,6 +71,24 @@ class ContactHelper:
         wd.find_element_by_css_selector("[value='Update']").click()
         self.return_to_home()
         self.contact_cache = None
+
+    def modify_contact_by_id(self, new_contact_data, id):
+        wd = self.app.wd
+        self.return_to_home()
+        # select first contact
+        self.select_contact_by_id(id)
+        self.fill_form(new_contact_data)
+        wd.find_element_by_css_selector("[value='Update']").click()
+        self.return_to_home()
+        self.contact_cache = None
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        self.return_to_home()
+        wd.find_element_by_css_selector("input[value='%s']" %id).click()
+        # wd.find_element_by_partial_link_text(("%s") %id).click()
+        wd.find_element_by_css_selector("a[href='edit.php?id=%s']" % id).click()
+        # wd.find_element_by_css_selector("[title='Edit']")[index].click()
 
     def select_contact_by_index(self, index):
         wd = self.app.wd
