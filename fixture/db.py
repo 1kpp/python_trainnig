@@ -1,6 +1,11 @@
 import pymysql.cursors
+from fixture.orm import ORMFixture
 from model.group import Group
 from model.contact import Contact
+from model.contacts_groups_link import ContactsGroups
+import random
+
+db = ORMFixture(host="127.0.0.1", name="addressbook", user="root", password="")
 
 
 class DbFixture:
@@ -28,14 +33,51 @@ class DbFixture:
         list = []
         cursor = self.connection.cursor()
         try:
-            cursor.execute("select id, firstname, middlename, lastname, nickname from addressbook")
+            cursor.execute("select id, firstname, middlename, lastname, email, email2, email3, address, address2, home,"
+                           "mobile, work, fax, phone2 from addressbook")
             for row in cursor:
-                (id, firstname, middlename, lastname, nickname) = row
-                list.append(Contact(id=str(id), firstname=firstname, middlename=middlename, lastname=lastname,
-                                    nickname=nickname))
+                (id, firstname, middlename, lastname, email, email2, email3, address, address2, home,
+                    mobile, work, fax, phone2) = row
+                list.append(Contact(id=str(id), firstname=firstname, middlename=middlename, lastname=lastname, address=address,
+                                    home=home ,mobile=mobile, fax=fax, email=email, email2=email2, email3=email3, address2=address2,
+                                    phone2=phone2))
         finally:
             cursor.close()
         return list
+
+    def get_contacts_groups_table(self):
+        list = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("select id, group_id from address_in_groups")
+            for row in cursor:
+                (id, group_id) = row
+                list.append(ContactsGroups(id=id, group_id=group_id))
+        finally:
+            cursor.close()
+        return list
+
+    def get_contact_in_group(self, random_group, random_contact):
+        l = db.get_contacts_in_group(random_group)
+        for item in l:
+            if item == random_contact:
+                return item
+
+    def show_all_contacts_in_group(self, group):
+        l = list(db.get_contacts_in_group(group))
+        return l
+
+    def show_random_contact_from_group(self, group):
+        l = db.get_contacts_in_group(group)
+        random_contact = random.choice(l)
+        return random_contact
+
+    def find_group_with_contact(self):
+        group_list = list(db.get_group_list())
+        for el in group_list:
+            if db.get_contacts_in_group(el):
+                return el
+        print(el)
 
     def destroy(self):
         self.connection.close()

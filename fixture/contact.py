@@ -1,5 +1,7 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
+from fixture.orm import ORMFixture
+import random
 import re
 
 
@@ -82,6 +84,26 @@ class ContactHelper:
         self.return_to_home()
         self.contact_cache = None
 
+    def add_contact_to_group(self, contact_id, group_id):
+        wd = self.app.wd
+        self.return_to_home()
+        self.select_contact_checkbox(contact_id)
+        self.select_random_group_from_list(group_id)
+        self.return_to_home()
+        self.contact_cache = None
+
+    def select_random_group_from_list(self, group_id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("select[name='to_group'] [value='%s']" %group_id).click()
+        wd.find_element_by_css_selector("[name='add']").click()
+
+    def delete_contact_from_group(self, group_with_contact_id):
+        wd = self.app.wd
+        self.return_to_home()
+        wd.find_element_by_css_selector("select[name='group'] option[value='%s']"%group_with_contact_id).click()
+        wd.find_element_by_css_selector("td[class='center'] input[type='checkbox']").click()
+        wd.find_element_by_name("remove").click()
+
     def select_contact_by_id(self, id):
         wd = self.app.wd
         self.return_to_home()
@@ -89,6 +111,11 @@ class ContactHelper:
         # wd.find_element_by_partial_link_text(("%s") %id).click()
         wd.find_element_by_css_selector("a[href='edit.php?id=%s']" % id).click()
         # wd.find_element_by_css_selector("[title='Edit']")[index].click()
+
+    def select_contact_checkbox(self, contact_id):
+        wd = self.app.wd
+        self.return_to_home()
+        wd.find_element_by_id("%s" %contact_id).click()
 
     def select_contact_by_index(self, index):
         wd = self.app.wd
