@@ -57,11 +57,33 @@ class DbFixture:
             cursor.close()
         return list
 
-    def get_contact_in_group(self, random_group, random_contact):
-        l = db.get_contacts_in_group(random_group)
-        for item in l:
-            if item == random_contact:
-                return item
+    def get_contact_in_group(self, random_group):
+        return db.get_contacts_in_group(random_group)
+
+    def get_contacts_not_in_any_of_groups(self):
+        list = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("SELECT id, firstname, lastname FROM addressbook where id not in (SELECT id from address_in_groups)")
+            for row in cursor:
+                (id, firstname, lastname) = row
+                list.append(Contact(id=id, firstname=firstname, lastname=lastname))
+        finally:
+            cursor.close()
+        return list
+
+    def get_groups_without_contacts(self):
+        list = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("SELECT group_id, group_name FROM group_list where group_id not in "
+                           "(SELECT group_id from address_in_groups)")
+            for row in cursor:
+                (group_id, group_name) = row
+                list.append(Group(id=group_id, name=group_name))
+        finally:
+            cursor.close()
+        return list
 
     def show_all_contacts_in_group(self, group):
         l = list(db.get_contacts_in_group(group))

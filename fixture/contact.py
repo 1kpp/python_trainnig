@@ -100,7 +100,7 @@ class ContactHelper:
     def delete_contact_from_group(self, group_with_contact_id):
         wd = self.app.wd
         self.return_to_home()
-        wd.find_element_by_css_selector("select[name='group'] option[value='%s']"%group_with_contact_id).click()
+        wd.find_element_by_css_selector("select[name='group'] option[value='%s']" % group_with_contact_id).click()
         wd.find_element_by_css_selector("td[class='center'] input[type='checkbox']").click()
         wd.find_element_by_name("remove").click()
 

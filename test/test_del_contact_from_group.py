@@ -5,7 +5,7 @@ import random
 
 def test_del_contact_from_group(app, db, check_ui):
     # checks whether there are contacts available. If not - create one
-    if len(db.get_group_list()) == 0:
+    if len(db.get_contact_list()) == 0:
         app.contact.create(Contact(firstname="Name for deletion"))
     # check whether there are groups available. If not - create one
     if len(db.get_group_list()) == 0:
