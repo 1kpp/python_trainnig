@@ -67,7 +67,7 @@ class DbFixture:
             cursor.execute("SELECT id, firstname, lastname FROM addressbook where id not in (SELECT id from address_in_groups)")
             for row in cursor:
                 (id, firstname, lastname) = row
-                list.append(Contact(id=id, firstname=firstname, lastname=lastname))
+                list.append(Contact(id=str(id), firstname=firstname, lastname=lastname))
         finally:
             cursor.close()
         return list
