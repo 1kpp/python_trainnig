@@ -1,4 +1,7 @@
 pytest
+pytest_bdd
+allure-pytest
+allure-python-commons
 selenium
 jsonpickle
 pony
